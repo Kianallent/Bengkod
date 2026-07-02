@@ -14,6 +14,7 @@ class RiwayatPasienController extends Controller
      */
     public function index()
     {
+        //b controler untuk daftar riwayat
         $riwayatPasien = Periksa::whereHas('daftarPoli.jadwalPeriksa', function($query) {
             $query->where('id_dokter', Auth::id());
         })->with([

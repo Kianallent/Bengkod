@@ -69,5 +69,92 @@ use Illuminate\Notifications\Notifiable;
         return $this->hasMany(JadwalPeriksa::class, 'id_dokter');
     }
 
+    /**
+     * Relasi untuk pasien (daftar poli yang mereka buat)
+     */
+    public function daftarPolis()
+    {
+        return $this->hasMany(DaftarPoli::class, 'id_pasien');
+    }
+
+    /**
+     * Relasi untuk periksa yang dilakukan dokter
+     */
+    public function periksas()
+    {
+        return $this->hasManyThrough(
+            Periksa::class,
+            JadwalPeriksa::class,
+            'id_dokter',
+            'id_daftar_poli',
+            'id',
+            'id'
+        );
+    }
+
+    /**
+     * Scope untuk filter dokter
+     */
+    public function scopeDokter($query)
+    {
+        return $query->where('role', 'dokter');
+    }
+
+    /**
+     * Scope untuk filter pasien
+     */
+    public function scopePasien($query)
+    {
+        return $query->where('role', 'pasien');
+    }
+
+    /**
+     * Scope untuk filter admin
+     */
+    public function scopeAdmin($query)
+    {
+        return $query->where('role', 'admin');
+    }
+
+    /**
+     * Cek apakah user adalah dokter
+     */
+    public function isDokter(): bool
+    {
+        return $this->role === 'dokter';
+    }
+
+    /**
+     * Cek apakah user adalah pasien
+     */
+    public function isPasien(): bool
+    {
+        return $this->role === 'pasien';
+    }
+
+    /**
+     * Cek apakah user adalah admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Get jumlah jadwal periksa
+     */
+    public function getJumlahJadwalhariAttribute(): int
+    {
+        return $this->jadwalPeriksa()->count();
+    }
+
+    /**
+     * Get jumlah pasien yang terdaftar
+     */
+    public function getJumlahPasienTerdaftarAttribute(): int
+    {
+        return $this->daftarPolis()->count();
+    }
+
 }
 

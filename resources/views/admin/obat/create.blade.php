@@ -74,6 +74,28 @@
                     @enderror
                 </div>
 
+                {{-- Stok --}}
+                <div class="mb-8">
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">
+                        Stok
+                        <span class="text-red-500">*</span>
+                    </label>
+
+                    <div class="flex items-center border-2 rounded-lg p-2 px-4 py-2
+                                focus-within:border-primary">
+                        <span class="text-slate-500 text-sm font-semibold mr-2">
+                            Jml
+                        </span>
+                        <input type="number" name="stok" value="{{ old('stok') }}" placeholder="0" min="0" step="1"
+                            class="w-full focus:outline-none
+                                      @error('stok') border-red-500 @enderror" required>
+                    </div>
+
+                    @error('stok')
+                    <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 {{-- Buttons --}}
                 <div class="flex gap-3">
                     <button type="submit" class="px-6 py-2.5 rounded-xl bg-primary 
